@@ -81,7 +81,8 @@ def profile():
     ]
     return {"title":"ALPHABET INC. (GOOGL / GOOG)  /  FCFF DCF",
             "subtitle":"Illustrative common-equity scenario · input date: 2026-09-30",
-            "per_share_label":"Scenario value / common share (USD)",
+            "per_share_label":"Exact value / common share (USD)",
+            "explicit_per_share_rounding":True,
             "inputs_subtitle":"Blue = editable scenario input; gray = filed-data formula or explicit bridge",
             "inputs":INPUTS,
             "percentage_cells":{("Reported",25),("Bridge",11),("Bridge",13)},

@@ -35,7 +35,7 @@ def verify(binary, source):
         with mcp(binary,folder) as call:
             rev=call("open_workbook",file=FILENAME)["revision"]
             v=verify_numbers(call)
-            for sheet,ran in {"Valuation":"A1:C21","Inputs":"A1:C25","Reported":"A1:C39",
+            for sheet,ran in {"Valuation":"A1:C22","Inputs":"A1:C25","Reported":"A1:C39",
                               "Bridge":"A1:C29","Forecast":"A1:H22","Capital":"A1:H14",
                               "Sensitivity":"A1:E11"}.items():
                 assert call("validate_cells",sheet=sheet,range=ran)["errors"]==[],sheet
@@ -45,6 +45,7 @@ def verify(binary, source):
             assert D(v("Reported","B29"))==159804 and D(v("Reported","B33"))==27995
             for row in range(21,26): compare_decimal(v("Inputs",f"B{row}"),a[row])
             compare_decimal(v("Valuation","B13"),calc["value"])
+            assert D(v("Valuation","B22"))==calc["value"].quantize(D(".01"))==D("174.82")
             compare_decimal(v("Valuation","B7"),calc["ev"])
             for i,col in enumerate("CDEFGH"):
                 for row,expected in zip((5,9,12,13,14,17),calc["details"][i]):
@@ -65,7 +66,7 @@ def verify(binary, source):
             compare_decimal(v("Valuation","B13"),erp); assert erp<calc["value"]
             edit("Inputs","B14","0.05")
             edit("Inputs","B10","0.10")
-            assert v("Valuation","B13")=="INVALID" and v("Forecast","H21")=="INVALID"
+            assert v("Valuation","B13")==v("Valuation","B22")==v("Forecast","H21")=="INVALID"
             edit("Inputs","B10","0.028")
             r=review(call)
             rr=call("record_review",sheet="Valuation",cell="B13",revision=r["revision"],

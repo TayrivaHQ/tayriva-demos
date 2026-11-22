@@ -2,6 +2,8 @@
 
 Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/lhemerly/gridloom/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
 
+Dollar amounts in this guide are rounded to the nearest cent. Gridloom 0.13.1 can truncate the grid display for some number formats; use **Explain & Review** for the full calculated value.
+
 ## Try it
 
 1. On **Sheet1**, the demo pays **4.60% fixed** and receives floating on **USD 10 million**. The fair fixed rate is **4.45%** and the payer PV is **−USD 41,140.33**. Open **Explain & Review** on **B14**: its saved review traces the two legs to the assumptions, cash flows, and underlying curve quotes.

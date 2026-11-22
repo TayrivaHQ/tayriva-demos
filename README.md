@@ -10,7 +10,7 @@ Open a real workbook, pick a result, and follow the inputs that produced it. The
 
 | Demo | Start here |
 | --- | --- |
-| [Alphabet (GOOGL / GOOG): FCFF valuation](workbooks/alphabet-fcff.gridloom) | **Valuation!B13** traces an illustrative equity value to Alphabet's SEC filings, forecast, cost of capital and share classes. [Walkthrough](docs/WALKTHROUGH.md#alphabet-googl--goog-a-multistage-fcff-valuation). |
+| [Alphabet (GOOGL / GOOG): FCFF valuation](workbooks/alphabet-fcff.gridloom) | **Valuation!B13** traces an illustrative equity value to Alphabet's SEC filings, forecast, cost of capital and share classes. **B22** shows the rounded value. [Walkthrough](docs/WALKTHROUGH.md#alphabet-googl--goog-a-multistage-fcff-valuation). |
 | [From Treasury yields to cash flows and PV](derivatives/treasury-snapshot.gridloom) | Inspect the dated public par yields, modeled forward rates and illustrative trade PV. [Connect a fresh Treasury snapshot through SQLite](derivatives/README.md#real-data-lab-treasury-par-yields-via-sql). |
 | [Build and price an OIS swap](derivatives/ois-swap.gridloom) | **Sheet1!B14** traces synthetic par quotes to discount factors, swap cash flows and pay-fixed PV. [Curve walkthrough](derivatives/README.md). |
 | [The total still ties](workbooks/the-total-still-ties.gridloom) | **Reconciliation!C7** ties at **$100.25**, but **F4–F5** flag that software and rent were swapped. |

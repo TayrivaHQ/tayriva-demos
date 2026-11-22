@@ -2,7 +2,7 @@
 
 ## Alphabet (GOOGL / GOOG): a multistage FCFF valuation
 
-Open **Valuation!B13** and choose **Review → Explain & Review**. The **$174.82 per common-equivalent share** output is an illustrative result conditional on the workbook inputs, not a target price, live stock quote, or recommendation.
+Open **Valuation!B13** and choose **Review → Explain & Review**. **B13** retains full calculation precision; **B22** explicitly rounds it to **$174.82 per common-equivalent share**. This output is an illustrative result conditional on the workbook inputs, not a target price, live stock quote, or recommendation.
 
 1. **Reported** uses Alphabet's [FY 2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm) and [September 2026 Form 10-Q](https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm) (filed October 29, 2026). FY25 + 9M26 − 9M25 gives **$471.098bn revenue** and **$156.976bn operating income** for the twelve months ended September 30, 2026. Historical cash purchases of PP&E and PP&E depreciation are separately traceable. The forecast starts from a trailing-year base; Year 1 represents the next rolling year, not fiscal 2027.
 2. **Forecast** builds six years of net reinvestment and cash flow. Years 1–3 use **14%** sales growth and a **32.5%** operating margin. They fade to **2.8%** growth and **31%** margin by Year 6. Higher near-term capital intensity is represented by **0.55** dollars of extra sales per dollar of net investment; forecast reinvestment represents net capex and noncash working-capital investment together. These are model inputs, not guidance. Historical EBIT, unlike net income, excludes gains from the investment portfolio.

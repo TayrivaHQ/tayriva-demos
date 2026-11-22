@@ -117,6 +117,9 @@ def generate(binary, output, *, profile=None):
         for index,*items in values: row("Valuation",index,*items)
         row("Valuation",19,"Capital weight checks",'=IF(AND(Capital!C14=1,Capital!D14=1,Capital!E14=1,Capital!F14=1,Capital!G14=1,Capital!H14=1),"OK","INVALID")',"Debt and equity weights sum to 100% in all six years")
         row("Valuation",20,"Sensitivity baseline tie",'=IF(B4="OK",IF(ABS(B13-Sensitivity!C7)<0.000001,"OK","CHECK"),"INVALID")',"Midpoint of the terminal sensitivity must equal base per share")
+        if profile.get("explicit_per_share_rounding"):
+            row("Valuation",22,"Scenario value per share (rounded)",'=IF(B4="OK",ROUND(B13,2),"INVALID")',
+                "Display only, rounded to cents; review the exact result in B13.")
         row("Valuation",21,"TRACE IT","B13 → Forecast → Inputs","Change Inputs!B14, then revisit B13 to see a review go stale.")
         row("Inputs",1,"MODEL ASSUMPTIONS")
         row("Inputs",2,profile.get("inputs_subtitle","All inputs are original synthetic values."))
@@ -173,7 +176,7 @@ def generate(binary, output, *, profile=None):
         for rr,*_ in values:
             special=rr in (7,12,13)
             if special: style("Valuation",rr,3,"#e0e7ff",True)
-            if rr!=4: style("Valuation",rr,2,"#e0e7ff" if special else None,special,start=2,fmt="0.00%" if rr>=14 else "0.00")
+            if rr!=4: style("Valuation",rr,2,"#e0e7ff" if special else None,special,start=2,fmt="0.00%" if rr>=14 else (None if rr==13 and profile.get("explicit_per_share_rounding") else "0.00"))
         for rr,_,raw,_ in inputs: style("Inputs",rr,2,"#f1f5f9" if str(raw).startswith("=") else "#eff6ff",False,start=2,fmt="0.00%" if rr in [5,6,7,10,11,12,13,14,17,18,19,20] else "0.00")
         for sheet, rows, rates in [("Capital",rows_cap,{4,5,6,8,9,10,11,12,13,14}),("Forecast",rows_fc,{4,6,8,14,19})]:
             for rr in rows:
