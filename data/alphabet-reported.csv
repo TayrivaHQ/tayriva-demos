@@ -1,0 +1,28 @@
+Row,Metric,USDm_or_million_shares,Period,Source,Location
+4,Revenue FY 2025,402836,FY ended 2025-12-31,SEC 10-K,Consolidated Statements of Income
+5,Revenue 9M 2025,289007,9M ended 2025-09-30,SEC 10-Q,Consolidated Statements of Income
+6,Revenue 9M 2026,357269,9M ended 2026-09-30,SEC 10-Q,Consolidated Statements of Income
+8,Operating income FY 2025,129039,FY ended 2025-12-31,SEC 10-K,Consolidated Statements of Income
+9,Operating income 9M 2025,93105,9M ended 2025-09-30,SEC 10-Q,Consolidated Statements of Income
+10,Operating income 9M 2026,121042,9M ended 2026-09-30,SEC 10-Q,Consolidated Statements of Income
+12,Cash and cash equivalents,56334,2026-09-30,SEC 10-Q,Balance Sheets / Note 3
+13,Marketable securities,208764,2026-09-30,SEC 10-Q,Balance Sheets / Note 3
+14,Restricted SpaceX shares within marketable securities,75200,2026-09-30,SEC 10-Q,Note 3 cash and marketable footnote 1
+15,Non-marketable securities,135230,2026-09-30,SEC 10-Q,Note 3 non-marketable securities
+16,Long-term debt net of current portion,125102,2026-09-30,SEC 10-Q,Note 6 Debt
+17,Current portion of long-term notes,1016,2026-09-30,SEC 10-Q,Note 6 Debt
+18,Finance lease liabilities,3705,2026-09-30,SEC 10-Q,Note 4 Leases
+19,Preferred depositary shares (millions),385,issued June 2026,SEC 10-Q,Note 11 Stockholders' Equity
+20,Liquidation preference USD per depositary share,50,terms as of 2026-09-30,SEC 10-Q,Note 11 Stockholders' Equity
+21,Total noncontrolling interests including redeemable,6900,2026-09-30,SEC 10-Q,Note 7 Supplemental Financial Statement Information
+22,Class A common shares (millions),5888,2026-09-30,SEC 10-Q,Consolidated Balance Sheets
+23,Class B common shares (millions),828,2026-09-30,SEC 10-Q,Consolidated Balance Sheets
+24,Class C common shares (millions),5578,2026-09-30,SEC 10-Q,Consolidated Balance Sheets
+26,Cash purchases of PPE FY 2025,91447,FY ended 2025-12-31,SEC 10-K,Consolidated Statements of Cash Flows
+27,Cash purchases of PPE 9M 2025,63596,9M ended 2025-09-30,SEC 10-Q,Consolidated Statements of Cash Flows
+28,Cash purchases of PPE 9M 2026,131953,9M ended 2026-09-30,SEC 10-Q,Consolidated Statements of Cash Flows
+30,PP&E depreciation FY 2025,21136,FY ended 2025-12-31,SEC 10-K,Consolidated Statements of Cash Flows
+31,PP&E depreciation 9M 2025,15096,9M ended 2025-09-30,SEC 10-Q,Consolidated Statements of Cash Flows
+32,PP&E depreciation 9M 2026,21955,9M ended 2026-09-30,SEC 10-Q,Consolidated Statements of Cash Flows
+38,Accrued fines and settlements,13807,2026-09-30,SEC 10-Q,Note 7 Accrued Expenses and Other Current Liabilities
+39,Payables to brokers for unsettled investment trades,3886,2026-09-30,SEC 10-Q,Note 7 Accrued Expenses and Other Current Liabilities
