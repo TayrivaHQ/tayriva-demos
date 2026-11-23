@@ -12,6 +12,7 @@ Open a real workbook, pick a result, and follow the inputs that produced it. The
 
 | Demo | Start here |
 | --- | --- |
+| [Brazil: NFS-e and the consumption tax reform](receita/README.md) | **Consulta!B11** traces a synthetic invoice through the packaged snapshot. Rebuild the linked workbook and process 10 million invoice rows across 100 distinct scenarios using the official local Receita Federal calculator. |
 | [Alphabet (GOOGL / GOOG): FCFF valuation](workbooks/alphabet-fcff.tay) | **Valuation!B13** traces an illustrative equity value to Alphabet's SEC filings, forecast, cost of capital and share classes. **B22** shows the rounded value. [Walkthrough](docs/WALKTHROUGH.md#alphabet-googl--goog-a-multistage-fcff-valuation). |
 | [From Treasury yields to cash flows and PV](derivatives/treasury-snapshot.tay) | Inspect the dated public par yields, modeled forward rates and illustrative trade PV. [Connect a fresh Treasury snapshot through SQLite](derivatives/README.md#real-data-lab-treasury-par-yields-via-sql). |
 | [Build and price an OIS swap](derivatives/ois-swap.tay) | **Sheet1!B14** traces synthetic par quotes to discount factors, swap cash flows and pay-fixed PV. [Curve walkthrough](derivatives/README.md). |
