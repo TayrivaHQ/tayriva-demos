@@ -6,6 +6,8 @@ Comece pela [planilha portátil `rtc-nfse.tay`](rtc-nfse.tay). Abra no Tayriva *
 
 ## O que realmente foi calculado
 
+Para medir cada nota separadamente, sem reutilizar resultados, use [o benchmark por nota](benchmark/README.md). O teste rápido descrito abaixo mede o fluxo que reaproveita perfis, não esse benchmark.
+
 O SQLite grava **10.000.000 de notas sintéticas e 10.000.000 de linhas de resultado**. São cem perfis monetários distintos do mesmo cenário educacional (NBS 122011200, CST 200, cClassTrib 200028, Porto Alegre, 10 de março de 2027). O motor oficial é chamado **duas vezes por perfil distinto**: base unificada NFS-e e tributos com observabilidade. O lote reutiliza esses cem resultados e grava cada nota por chave primária. **Não são dez milhões de chamadas à API, dez milhões de perfis distintos nem um benchmark de notas reais.**
 
 Em um teste local Linux x86-64, o verificador completo terminou em **22,6 s** após iniciar a API oficial, incluindo geração, as chamadas para cem perfis, escrita das linhas, interrupção/retomada, reexecução idempotente, verificações SQLite e abertura da planilha. O SQLite final ocupou **952 MiB**. O tempo exclui baixar, compilar e iniciar o motor e não representa desempenho com dez milhões de chamadas.
