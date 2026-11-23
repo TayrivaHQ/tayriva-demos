@@ -23,7 +23,7 @@ def verify(binary, source):
         25:D(facts[22])+facts[23]+facts[24],
     })
     calc=control(a)
-    with tempfile.TemporaryDirectory(prefix="alphabet-gridloom-qa-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="alphabet-tayriva-qa-") as tmp:
         folder=Path(tmp)
         shutil.copyfile(source,folder/FILENAME)
         def verify_numbers(call):
@@ -94,7 +94,7 @@ def verify(binary, source):
 
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument("gridloom_mcp",type=Path)
+    p.add_argument("tayriva_mcp",type=Path)
     p.add_argument("--workbook",type=Path,default=ROOT/"workbooks"/FILENAME)
     a=p.parse_args()
-    verify(a.gridloom_mcp,a.workbook)
+    verify(a.tayriva_mcp,a.workbook)

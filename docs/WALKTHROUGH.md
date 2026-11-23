@@ -24,15 +24,17 @@ The model follows Aswath Damodaran’s [Spring 2026 NYU Stern FCFF course materi
 
 ## Rebuild and verify on Linux
 
-Use Python 3.11+ and the launchers from the [Gridloom v0.13.1 Linux server package](https://github.com/TayrivaHQ/tayriva/releases/tag/v0.13.1). The source scripts start an isolated process on a loopback port; the verifiers use headless MCP and alter only scratch copies. The generated calculation and layout are reproducible; SQLite revision and file metadata need not be byte-identical across builds.
+Use Python 3.11+ and the launchers from the [Tayriva v0.14.0 Linux server package](https://github.com/TayrivaHQ/tayriva/releases/download/v0.14.0/tayriva-0.14.0-linux-x86_64-server.tar.gz). The source scripts start an isolated process on a loopback port; the verifiers use headless MCP and alter only scratch copies. The generated calculation and layout are reproducible; SQLite revision and file metadata need not be byte-identical across builds.
 
 ```sh
-app=/absolute/path/to/extracted/gridloom-server
-python3 scripts/build_alphabet.py "$app/gridloom" --output /tmp/rebuilt-alphabet.gridloom
-python3 scripts/verify_alphabet.py "$app/gridloom-mcp" --workbook /tmp/rebuilt-alphabet.gridloom
+app=/absolute/path/to/extracted/tayriva-server
+python3 scripts/verify_bundle.py "$app"  # checks the four distributed files as shipped
 
-python3 scripts/build_reconciliation.py build "$app/gridloom" --workbook /tmp/rebuilt-gl.gridloom
-python3 scripts/build_reconciliation.py verify "$app/gridloom-mcp" --workbook /tmp/rebuilt-gl.gridloom
+python3 scripts/build_alphabet.py "$app/tayriva" --output /tmp/rebuilt-alphabet.tay
+python3 scripts/verify_alphabet.py "$app/tayriva-mcp" --workbook /tmp/rebuilt-alphabet.tay
+
+python3 scripts/build_reconciliation.py build "$app/tayriva" --workbook /tmp/rebuilt-gl.tay
+python3 scripts/build_reconciliation.py verify "$app/tayriva-mcp" --workbook /tmp/rebuilt-gl.tay
 ```
 
 The DCF verifier uses independent Decimal arithmetic for all six years and all nine sensitivity values. It checks the base value, equity-risk-premium and perpetual-growth shocks, the WACC-versus-growth guard, and stale review through save and reopen. The reconciliation test confirms that swapping the categories, or later reallocating an equal amount, cannot be caught by the aggregate total alone.

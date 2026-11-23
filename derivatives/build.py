@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and verify the synthetic OIS-style Gridloom example using Gridloom MCP."""
+"""Build and verify the synthetic OIS-style Tayriva example using Tayriva MCP."""
 import argparse
 from decimal import Decimal as D, localcontext
 import json
@@ -11,7 +11,7 @@ from urllib.request import Request, urlopen
 import subprocess
 import tempfile
 
-NAME = "ois-swap.gridloom"
+NAME = "ois-swap.tay"
 QUOTES = tuple(map(D, ("0.0500", "0.0470", "0.0445", "0.0430", "0.0420")))
 BUMP, FIXED, NOTIONAL = D("0.0001"), D("0.0460"), D("10000000")
 EPS = D("0.000000002")
@@ -182,8 +182,8 @@ def verify(mcp, quotes=QUOTES, shock=BUMP, side=1):
 
 
 def format_book(executable, path):
-    """Use the optional packaged Gridloom server for native view formatting."""
-    env = {**os.environ, "GRIDLOOM_RECOVERY_DIR": str(path.parent / "recovery"), "RUST_LOG": "error"}
+    """Use the optional packaged Tayriva server for native view formatting."""
+    env = {**os.environ, "TAYRIVA_RECOVERY_DIR": str(path.parent / "recovery"), "RUST_LOG": "error"}
     with subprocess.Popen([executable, "--port", "0"], stdout=subprocess.PIPE, text=True, env=env) as server:
         try:
             line = server.stdout.readline()
@@ -247,7 +247,7 @@ def format_book(executable, path):
 
 
 def build(executable, output, server=None):
-    with tempfile.TemporaryDirectory(prefix="gridloom-ois-") as staging:
+    with tempfile.TemporaryDirectory(prefix="tayriva-ois-") as staging:
         staging = Path(staging)
         with MCP(executable, staging) as mcp:
             rev = mcp.call("create_workbook", file=NAME)["revision"]
@@ -311,6 +311,6 @@ if __name__ == "__main__":
     parser.add_argument("--mcp", required=True, type=lambda p: str(Path(p).resolve()))
     parser.add_argument("--output", type=Path, default=Path(__file__).with_name(NAME))
     parser.add_argument("--server", type=lambda p: str(Path(p).resolve()),
-                        help="Optional Gridloom server launcher to apply native display formatting")
+                        help="Optional Tayriva server launcher to apply native display formatting")
     p = parser.parse_args()
     build(p.mcp, p.output, p.server)

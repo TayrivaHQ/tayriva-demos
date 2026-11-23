@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage public Treasury CMT quotes in SQLite and build a native Gridloom teaching curve."""
+"""Stage public Treasury CMT quotes in SQLite and build a native Tayriva teaching curve."""
 import argparse
 from contextlib import contextmanager
 import csv
@@ -28,7 +28,7 @@ PUBLIC_TABLE = BASE + "TextView?type=daily_treasury_yield_curve&field_tdr_date_v
 def get_csv(month):
     assert re.fullmatch(r"[0-9]{6}", month)
     url = BASE + f"daily-treasury-rates.csv/all/{month}?_format=csv&field_tdr_date_value_month={month}&page=&type=daily_treasury_yield_curve"
-    req = Request(url, headers={"Accept": "text/csv", "User-Agent": "Gridloom-Demos/1.0"})
+    req = Request(url, headers={"Accept": "text/csv", "User-Agent": "Tayriva-Demos/1.0"})
     with urlopen(req, timeout=15) as response:
         if not response.geturl().startswith(BASE):
             raise ValueError("Unexpected redirect from official feed")
@@ -135,7 +135,7 @@ def oracle(inputs):
 
 @contextmanager
 def http_server(exe, temp):
-    env = {**os.environ, "GRIDLOOM_RECOVERY_DIR": str(temp / "recovery"), "RUST_LOG": "error"}
+    env = {**os.environ, "TAYRIVA_RECOVERY_DIR": str(temp / "recovery"), "RUST_LOG": "error"}
     with subprocess.Popen([exe,"--port","0"],stdout=subprocess.PIPE,text=True,env=env) as p:
         try:
             line=p.stdout.readline()
@@ -162,9 +162,9 @@ def verify(got, expected, error=D("0.000001")):
 
 def write_models(p, db, stamp, rates, source):
     fair,pv,discounts=oracle(rates)
-    with tempfile.TemporaryDirectory(prefix="gridloom-cmt-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="tayriva-cmt-") as tmp:
         tmp=Path(tmp)
-        snap="treasury-snapshot.gridloom"
+        snap="treasury-snapshot.tay"
         with MCP(p.mcp,tmp) as mcp:
             rev=mcp.call("create_workbook",file=snap)["revision"]
             for n in ("Quotes","Curve"):
@@ -204,7 +204,7 @@ def write_models(p, db, stamp, rates, source):
                 verify(read("Sheet1",10,2),pv)
                 evidence=request("cells/explain",sheet_name="Quotes",row=10,col=1)
                 assert "SQLVALUE" in json.dumps(evidence) and "treasury_cmt" in json.dumps(evidence)
-                path=str((p.directory/"treasury-linked.gridloom").resolve())
+                path=str((p.directory/"treasury-linked.tay").resolve())
                 request("workbook/save",path=path,create_only=True)
                 request("workbook/open",path=path)
                 verify(read("Sheet1",10,2),pv)
@@ -225,7 +225,7 @@ def write_models(p, db, stamp, rates, source):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mcp",required=True,type=lambda p:str(Path(p).resolve()))
-    parser.add_argument("--server",type=lambda p:str(Path(p).resolve()),help="Optional Gridloom Linux server launcher for a local SQL-linked workbook")
+    parser.add_argument("--server",type=lambda p:str(Path(p).resolve()),help="Optional Tayriva Linux server launcher for a local SQL-linked workbook")
     parser.add_argument("--directory",required=True,type=Path,help="New output directory")
     mode=parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--offline",action="store_true",help="Use shipped 2026-11-20 Treasury observation")

@@ -1,7 +1,7 @@
 __pycache__/
 *.py[cod]
-*.gridloom.lock
-.gridloom-workbook.lock
-*.gridloom-wal
-*.gridloom-shm
-*.gridloom-journal
+*.tay.lock
+.tayriva-workbook.lock
+*.tay-wal
+*.tay-shm
+*.tay-journal

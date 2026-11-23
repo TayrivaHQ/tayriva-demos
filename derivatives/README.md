@@ -1,8 +1,8 @@
 # From swap quotes to price and risk
 
-Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/TayrivaHQ/tayriva/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
+Open [ois-swap.tay](ois-swap.tay) in [Tayriva 0.14.0 or later](https://github.com/TayrivaHQ/tayriva/releases/tag/v0.14.0). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
 
-Dollar amounts in this guide are rounded to the nearest cent. Gridloom 0.13.1 can truncate the grid display for some number formats; use **Explain & Review** for the full calculated value.
+Dollar amounts in this guide are rounded to the nearest cent. For full precision, select a result and use **Explain & Review**.
 
 ## Try it
 
@@ -33,15 +33,15 @@ This is a regular, spot-starting, on-node educational model, not market-ready pr
 With Python 3 and the packaged Tayriva executables:
 
 ```sh
-python3 derivatives/build.py --mcp /path/to/gridloom-mcp \
-  --server /path/to/gridloom --output /tmp/ois-swap-check.gridloom
+python3 derivatives/build.py --mcp /path/to/tayriva-mcp \
+  --server /path/to/tayriva --output /tmp/ois-swap-check.tay
 ```
 
 `--server` is optional and applies native presentation styling with the Linux server package; remove it to verify/regenerate the same formulas and review through MCP alone. Both routes validate against independent Decimal arithmetic, reopen the saved native workbook, trace the downstream PV to its quote inputs, test a 25 bp quote change, detect stale review, and check side and bump-size changes. Verification scenarios are not saved in the demo. The builder refuses to overwrite an existing output; review identifiers and timestamps may differ between builds.
 
 ## Real-data lab: Treasury par yields via SQL
 
-Open [treasury-snapshot.gridloom](treasury-snapshot.gridloom) for an offline example calibrated to the U.S. Treasury's published **November 20, 2026** observation. The five published nodes (6M, 1Y, 2Y, 3Y, 5Y) are separated from the interpolated semiannual nodes. The workbook bootstraps discounts and period forwards in cells, then uses them in a separate illustrative three-year swap. For this observation, the simplified model gives a **4.65%** fair fixed rate and a **+$13,861.22** pay-fixed PV at 4.60%. The [Treasury daily table](https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202611) is the snapshot source. See [Treasury's convention FAQ](https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/interest-rates-frequently-asked-questions) and [official curve methodology](https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).
+Open [treasury-snapshot.tay](treasury-snapshot.tay) for an offline example calibrated to the U.S. Treasury's published **November 20, 2026** observation. The five published nodes (6M, 1Y, 2Y, 3Y, 5Y) are separated from the interpolated semiannual nodes. The workbook bootstraps discounts and period forwards in cells, then uses them in a separate illustrative three-year swap. For this observation, the simplified model gives a **4.65%** fair fixed rate and a **+$13,861.22** pay-fixed PV at 4.60%. The [Treasury daily table](https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202611) is the snapshot source. See [Treasury's convention FAQ](https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/interest-rates-frequently-asked-questions) and [official curve methodology](https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).
 
 These are **Treasury par yields**, not traded SOFR/OIS, futures forwards, or Treasury's official forward curve. The derived forwards are predictions of neither future rates nor swap prices. Treasury uses a monotone-convex curve; this workbook deliberately interpolates missing par yields linearly and bootstraps the semiannual grid for teachability. The offline workbook stores quote provenance and SQL selection but has no runtime data connection.
 
@@ -49,10 +49,10 @@ Generate the genuinely SQL-linked version with the unpacked Linux Tayriva server
 
 ```sh
 python3 derivatives/treasury.py --as-of 2026-11-20 --directory ./treasury-live \
-  --mcp /path/to/gridloom-mcp --server /path/to/gridloom
+  --mcp /path/to/tayriva-mcp --server /path/to/tayriva
 ```
 
-The script requests Treasury's official monthly **Download CSV** endpoint, selects the latest complete observation on or before the explicit date in that month, and loads it into local SQLite as integer basis points. Open the generated `treasury-linked.gridloom` in Tayriva, not in MCP. `Quotes!B8:B12` queries the SQLite table with Tayriva's native parameterized `SQLVALUE`; follow any quote cell in **Explain & Review**. Rates flow through the modeled semiannual discounts and period forwards to trade PV. Use a new directory for a new observation. This is an explicit refresh, not an automatic network call from a worksheet. Do not relocate the linked workbook/SQLite without recreating the connection: the local output records its absolute database path.
+The script requests Treasury's official monthly **Download CSV** endpoint, selects the latest complete observation on or before the explicit date in that month, and loads it into local SQLite as integer basis points. Open the generated `treasury-linked.tay` in Tayriva, not in MCP. `Quotes!B8:B12` queries the SQLite table with Tayriva's native parameterized `SQLVALUE`; follow any quote cell in **Explain & Review**. Rates flow through the modeled semiannual discounts and period forwards to trade PV. Use a new directory for a new observation. This is an explicit refresh, not an automatic network call from a worksheet. Do not relocate the linked workbook/SQLite without recreating the connection: the local output records its absolute database path.
 
 If the network is unavailable, replace `--as-of 2026-11-20` with `--offline` to build using the included one-observation Treasury extract, or open the bundled snapshot without rebuilding anything. Verification uses an independent Decimal solver and the exact packaged Tayriva engine. The SQL-linked check reopens the workbook and validates that a temporary +25 bp change in the **local demo database** flows through SQL to a **+$83,024.11** model PV, then restores the original quote. It does not represent a published market observation. MCP intentionally rejects linked external workbooks; the snapshot remains fully usable in MCP.
 

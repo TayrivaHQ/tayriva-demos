@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Generate the native FCFF demo through a private local Gridloom process."""
+"""Generate the native FCFF demo through a private local Tayriva process."""
 import argparse
 from contextlib import contextmanager
 from pathlib import Path
 import json, os, re, subprocess, tempfile, time
 from urllib.request import Request, urlopen
 
-FILENAME = "sterling-harbor-fcff.gridloom"
+FILENAME = "sterling-harbor-fcff.tay"
 ROOT = Path(__file__).resolve().parents[1]
 # USD millions (except rates, ratios, and shares in millions). Entirely fictional.
 INPUTS = [
@@ -43,12 +43,12 @@ LAYOUT = {
 
 @contextmanager
 def local_app(binary):
-    with tempfile.TemporaryDirectory(prefix="gridloom-dcf-") as temp:
+    with tempfile.TemporaryDirectory(prefix="tayriva-dcf-") as temp:
         folder=Path(temp)
         log=folder/"server.log"
         with log.open("wb") as output, subprocess.Popen(
             [str(binary.resolve()), "--port", "0"], cwd=folder, stdout=output, stderr=subprocess.STDOUT,
-            env={**os.environ, "GRIDLOOM_RECOVERY_DIR":str(folder/"recovery")},
+            env={**os.environ, "TAYRIVA_RECOVERY_DIR":str(folder/"recovery")},
         ) as proc:
             try:
                 for _ in range(250):
@@ -193,7 +193,7 @@ def generate(binary, output, *, profile=None):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("gridloom_server",type=Path,help="Bundled Linux server launcher (gridloom)")
+    parser.add_argument("tayriva_server",type=Path,help="Bundled Linux server launcher (tayriva)")
     parser.add_argument("--output",type=Path,default=ROOT/"workbooks"/FILENAME)
     a=parser.parse_args()
-    generate(a.gridloom_server,a.output)
+    generate(a.tayriva_server,a.output)

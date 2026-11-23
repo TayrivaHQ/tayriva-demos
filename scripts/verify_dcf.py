@@ -34,7 +34,7 @@ def mcp(binary, folder):
             return result["structuredContent"]
         try:
             assert rpc("initialize", {"protocolVersion":"2025-11-25","capabilities":{},
-                    "clientInfo":{"name":"gridloom-fixture-check","version":"1"}})["protocolVersion"]=="2025-11-25"
+                    "clientInfo":{"name":"tayriva-fixture-check","version":"1"}})["protocolVersion"]=="2025-11-25"
             send({"method":"notifications/initialized"})
             yield call
         finally:
@@ -72,7 +72,7 @@ def compare_decimal(got,want):
     assert isinstance(want,D) and abs(D(got)-want)<TOL,(got,want)
 
 def verify(binary, workbook):
-    with tempfile.TemporaryDirectory(prefix="gridloom-verify-dcf-") as d:
+    with tempfile.TemporaryDirectory(prefix="tayriva-verify-dcf-") as d:
         path=Path(d)
         shutil.copyfile(workbook,path/FILENAME)
         values={r:D(v) for r,_,v,_ in INPUTS}
@@ -134,7 +134,7 @@ def verify(binary, workbook):
 
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument("gridloom_mcp",type=Path)
+    p.add_argument("tayriva_mcp",type=Path)
     p.add_argument("--workbook", type=Path,default=ROOT/"workbooks"/FILENAME)
     a=p.parse_args()
-    verify(a.gridloom_mcp,a.workbook)
+    verify(a.tayriva_mcp,a.workbook)

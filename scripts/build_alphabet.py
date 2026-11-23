@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build Alphabet's educational, filed-data-anchored DCF in native Gridloom."""
+"""Build Alphabet's educational, filed-data-anchored DCF in native Tayriva."""
 import argparse, csv
 from pathlib import Path
 from build_dcf import ROOT, generate
 
-FILENAME = "alphabet-fcff.gridloom"
+FILENAME = "alphabet-fcff.tay"
 Q = "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm"
 K = "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm"
 INPUTS = [
@@ -91,7 +91,7 @@ def profile():
 
 if __name__=="__main__":
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("gridloom_server",type=Path,help="Bundled Linux server launcher")
+    ap.add_argument("tayriva_server",type=Path,help="Bundled Linux server launcher")
     ap.add_argument("--output",type=Path,default=ROOT/"workbooks"/FILENAME)
     a=ap.parse_args()
-    generate(a.gridloom_server,a.output,profile=profile())
+    generate(a.tayriva_server,a.output,profile=profile())

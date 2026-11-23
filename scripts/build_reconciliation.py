@@ -8,7 +8,7 @@ import tempfile
 from build_dcf import local_app, ROOT
 from verify_dcf import mcp
 
-FILENAME="the-total-still-ties.gridloom"
+FILENAME="the-total-still-ties.tay"
 
 def build(binary, output):
     output=output.resolve()
@@ -54,7 +54,7 @@ def build(binary, output):
         post("workbook/save",path=str(output))
 
 def verify(binary, workbook):
-    with tempfile.TemporaryDirectory(prefix="gridloom-verify-gl-") as d:
+    with tempfile.TemporaryDirectory(prefix="tayriva-verify-gl-") as d:
         dest=Path(d)
         shutil.copyfile(workbook,dest/FILENAME)
         with mcp(binary,dest) as call:
@@ -95,7 +95,7 @@ def verify(binary, workbook):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("command",choices=["build","verify"])
-    p.add_argument("binary",type=Path,help="Gridloom server or MCP launcher, respectively")
+    p.add_argument("binary",type=Path,help="Tayriva server or MCP launcher, respectively")
     p.add_argument("--workbook",type=Path,default=ROOT/"workbooks"/FILENAME)
     a=p.parse_args()
     (build if a.command=="build" else verify)(a.binary,a.workbook)
