@@ -1,6 +1,6 @@
 # From swap quotes to price and risk
 
-Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/GridloomHQ/tayriva/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
+Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/TayrivaHQ/tayriva/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
 
 Dollar amounts in this guide are rounded to the nearest cent. Gridloom 0.13.1 can truncate the grid display for some number formats; use **Explain & Review** for the full calculated value.
 
