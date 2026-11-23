@@ -1,6 +1,6 @@
 # From swap quotes to price and risk
 
-Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/lhemerly/gridloom/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
+Open [ois-swap.gridloom](ois-swap.gridloom) in [Gridloom 0.13.1 or later](https://github.com/GridloomHQ/tayriva/releases). This self-contained example bootstraps a five-node USD overnight-index-swap-style discount curve and values a three-year fixed-versus-floating swap. All quotes are synthetic. No data connections are required.
 
 Dollar amounts in this guide are rounded to the nearest cent. Gridloom 0.13.1 can truncate the grid display for some number formats; use **Explain & Review** for the full calculated value.
 
@@ -30,7 +30,7 @@ This is a regular, spot-starting, on-node educational model, not market-ready pr
 
 ## Rebuild and verify
 
-With Python 3 and the packaged Gridloom executables:
+With Python 3 and the packaged Tayriva executables:
 
 ```sh
 python3 derivatives/build.py --mcp /path/to/gridloom-mcp \
@@ -45,15 +45,15 @@ Open [treasury-snapshot.gridloom](treasury-snapshot.gridloom) for an offline exa
 
 These are **Treasury par yields**, not traded SOFR/OIS, futures forwards, or Treasury's official forward curve. The derived forwards are predictions of neither future rates nor swap prices. Treasury uses a monotone-convex curve; this workbook deliberately interpolates missing par yields linearly and bootstraps the semiannual grid for teachability. The offline workbook stores quote provenance and SQL selection but has no runtime data connection.
 
-Generate the genuinely SQL-linked version with the unpacked Linux Gridloom server package:
+Generate the genuinely SQL-linked version with the unpacked Linux Tayriva server package:
 
 ```sh
 python3 derivatives/treasury.py --as-of 2026-11-20 --directory ./treasury-live \
   --mcp /path/to/gridloom-mcp --server /path/to/gridloom
 ```
 
-The script requests Treasury's official monthly **Download CSV** endpoint, selects the latest complete observation on or before the explicit date in that month, and loads it into local SQLite as integer basis points. Open the generated `treasury-linked.gridloom` in Gridloom, not in MCP. `Quotes!B8:B12` queries the SQLite table with Gridloom's native parameterized `SQLVALUE`; follow any quote cell in **Explain & Review**. Rates flow through the modeled semiannual discounts and period forwards to trade PV. Use a new directory for a new observation. This is an explicit refresh, not an automatic network call from a worksheet. Do not relocate the linked workbook/SQLite without recreating the connection: the local output records its absolute database path.
+The script requests Treasury's official monthly **Download CSV** endpoint, selects the latest complete observation on or before the explicit date in that month, and loads it into local SQLite as integer basis points. Open the generated `treasury-linked.gridloom` in Tayriva, not in MCP. `Quotes!B8:B12` queries the SQLite table with Tayriva's native parameterized `SQLVALUE`; follow any quote cell in **Explain & Review**. Rates flow through the modeled semiannual discounts and period forwards to trade PV. Use a new directory for a new observation. This is an explicit refresh, not an automatic network call from a worksheet. Do not relocate the linked workbook/SQLite without recreating the connection: the local output records its absolute database path.
 
-If the network is unavailable, replace `--as-of 2026-11-20` with `--offline` to build using the included one-observation Treasury extract, or open the bundled snapshot without rebuilding anything. Verification uses an independent Decimal solver and the exact packaged Gridloom engine. The SQL-linked check reopens the workbook and validates that a temporary +25 bp change in the **local demo database** flows through SQL to a **+$83,024.11** model PV, then restores the original quote. It does not represent a published market observation. MCP intentionally rejects linked external workbooks; the snapshot remains fully usable in MCP.
+If the network is unavailable, replace `--as-of 2026-11-20` with `--offline` to build using the included one-observation Treasury extract, or open the bundled snapshot without rebuilding anything. Verification uses an independent Decimal solver and the exact packaged Tayriva engine. The SQL-linked check reopens the workbook and validates that a temporary +25 bp change in the **local demo database** flows through SQL to a **+$83,024.11** model PV, then restores the original quote. It does not represent a published market observation. MCP intentionally rejects linked external workbooks; the snapshot remains fully usable in MCP.
 
 **Validation status:** The bundled Treasury observation was checked against the official daily table. The offline-to-SQL import, workbook reopen, local SQL refresh, and repricing were tested end to end. The direct live CSV fetch could not be tested from the verification environment; use the bundled offline input if the endpoint is unavailable.

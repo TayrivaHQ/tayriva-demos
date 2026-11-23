@@ -1,11 +1,13 @@
-# Gridloom demos
+# Tayriva demos
+
+<img src="docs/images/tayriva-mark.png" width="112" height="112" alt="Tayriva logo">
 
 Open a real workbook, pick a result, and follow the inputs that produced it. The valuation and Treasury labs use cited public data; the OIS and reconciliation fixtures use synthetic inputs. None of these files is investment advice or audit assurance.
 
 ## Open a demo
 
-1. [Download Gridloom](https://github.com/lhemerly/gridloom/releases/latest) for Windows x64 or Linux x64. The examples were built on **0.13.1**.
-2. Download a `.gridloom` file below. Launch Gridloom, then use **File → Open**. Enter the downloaded file's full path if prompted.
+1. [Download Tayriva](https://github.com/GridloomHQ/tayriva/releases/latest) for Windows x64 or Linux x64. The examples were built on **Gridloom 0.13.1**, before the Tayriva rename.
+2. Download a `.gridloom` file below. Launch Tayriva, then use **File → Open**. Enter the downloaded file's full path if prompted.
 3. Select the suggested result and open **Review → Explain & Review**. Use **Save As** if you want to keep a clean original.
 
 | Demo | Start here |
@@ -17,4 +19,4 @@ Open a real workbook, pick a result, and follow the inputs that produced it. The
 
 All bundled workbooks open offline. The optional Treasury SQL workflow uses a local SQLite database and an explicit download, never an automatic network call from a worksheet.
 
-[Rebuild and verify the demos](docs/WALKTHROUGH.md#rebuild-and-verify-on-linux) · [Set up Gridloom's MCP server](https://github.com/lhemerly/gridloom/blob/main/docs/MCP.md)
+[Rebuild and verify the demos](docs/WALKTHROUGH.md#rebuild-and-verify-on-linux) · [Set up Tayriva's MCP server](https://github.com/GridloomHQ/tayriva/blob/main/docs/MCP.md)

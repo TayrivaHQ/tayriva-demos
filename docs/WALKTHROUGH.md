@@ -24,7 +24,7 @@ The model follows Aswath Damodaran’s [Spring 2026 NYU Stern FCFF course materi
 
 ## Rebuild and verify on Linux
 
-Use Python 3.11+ and the launchers from the [Gridloom v0.13.1 Linux server package](https://github.com/lhemerly/gridloom/releases/tag/v0.13.1). The source scripts start an isolated process on a loopback port; the verifiers use headless MCP and alter only scratch copies. The generated calculation and layout are reproducible; SQLite revision and file metadata need not be byte-identical across builds.
+Use Python 3.11+ and the launchers from the [Gridloom v0.13.1 Linux server package](https://github.com/GridloomHQ/tayriva/releases/tag/v0.13.1). The source scripts start an isolated process on a loopback port; the verifiers use headless MCP and alter only scratch copies. The generated calculation and layout are reproducible; SQLite revision and file metadata need not be byte-identical across builds.
 
 ```sh
 app=/absolute/path/to/extracted/gridloom-server
