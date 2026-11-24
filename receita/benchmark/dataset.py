@@ -26,7 +26,26 @@ CREATE TABLE bench_state (id INTEGER PRIMARY KEY CHECK(id=1), total INTEGER NOT 
  committed INTEGER NOT NULL CHECK(committed<=total)) STRICT;
 """
 
-def create(path, n):
+SCOPE_GUARDS = """
+CREATE TRIGGER rtc_fixed_scenario_insert BEFORE INSERT ON bench_invoices
+WHEN NOT (NEW.nbs='122011200' AND NEW.cst='200' AND NEW.class='200028'
+  AND substr(NEW.event,1,4)='2027' AND
+  (NEW.municipality,NEW.uf) IN ((4314902,'RS'),(3550308,'SP'),(3304557,'RJ'),(3106200,'MG'))
+  AND NEW.gross>=0 AND NEW.discount>=0 AND NEW.iss>=0 AND NEW.gross-NEW.discount>=NEW.iss
+  AND NEW.cbs_rate BETWEEN 0 AND 10000 AND NEW.state_rate BETWEEN 0 AND 10000
+  AND NEW.city_rate BETWEEN 0 AND 10000)
+BEGIN SELECT RAISE(ABORT,'Input is outside the fixed 2027 NFS-e demo scenario'); END;
+CREATE TRIGGER rtc_fixed_scenario_update BEFORE UPDATE ON bench_invoices
+WHEN NOT (NEW.nbs='122011200' AND NEW.cst='200' AND NEW.class='200028'
+  AND substr(NEW.event,1,4)='2027' AND
+  (NEW.municipality,NEW.uf) IN ((4314902,'RS'),(3550308,'SP'),(3304557,'RJ'),(3106200,'MG'))
+  AND NEW.gross>=0 AND NEW.discount>=0 AND NEW.iss>=0 AND NEW.gross-NEW.discount>=NEW.iss
+  AND NEW.cbs_rate BETWEEN 0 AND 10000 AND NEW.state_rate BETWEEN 0 AND 10000
+  AND NEW.city_rate BETWEEN 0 AND 10000)
+BEGIN SELECT RAISE(ABORT,'Input is outside the fixed 2027 NFS-e demo scenario'); END;
+"""
+
+def create(path, n, *, worksheet=False):
     if path.exists(): raise FileExistsError(path)
     start=time.perf_counter()
     with closing(sqlite3.connect(path)) as c, c:
@@ -42,6 +61,9 @@ def create(path, n):
               850+(i*31)%61,4+i%4,3+i%5
             FROM ids""",(n,))
         c.execute("INSERT INTO bench_state VALUES (1,?,0)", (n,))
+    if worksheet:
+        with closing(sqlite3.connect(path)) as c:
+            c.executescript(SCOPE_GUARDS)
     print(json.dumps(dict(generated=n,generation_s=time.perf_counter()-start,db_bytes=path.stat().st_size)))
 
 def validate(path,n,api,*,worksheet=False):
@@ -87,8 +109,8 @@ if __name__=="__main__":
     p.add_argument("db",type=Path)
     p.add_argument("--rows",type=int,default=10_000_000)
     p.add_argument("--api",default="http://127.0.0.1:18927")
-    p.add_argument("--worksheet",action="store_true",help="Check worksheet results without the Java runner checkpoint")
+    p.add_argument("--worksheet",action="store_true",help="Prepare guarded native inputs, or verify without the Java runner checkpoint")
     a=p.parse_args()
     if not 1<=a.rows<=10_000_000:p.error("rows must be 1..10000000")
-    if a.mode=="prepare": create(a.db,a.rows)
+    if a.mode=="prepare": create(a.db,a.rows,worksheet=a.worksheet)
     else: validate(a.db,a.rows,a.api,worksheet=a.worksheet)

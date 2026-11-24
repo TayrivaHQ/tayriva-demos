@@ -14,12 +14,12 @@ Use a Tayriva build with **Data → Run formula batch**. Use a new SQLite file a
 
 ```sh
 server=/absolute/path/to/gridloom-server
-python3 receita/benchmark/dataset.py prepare rtc-native.sqlite
+python3 receita/benchmark/dataset.py prepare rtc-native.sqlite --worksheet
 python3 receita/native/workbook.py build --server "$server" --db rtc-native.sqlite --workbook rtc-native.tay
 ```
 
 1. Open `rtc-native.tay` in Tayriva. In **Cálculo**, edit **B4** to select an invoice number. Inputs are read directly from SQLite; CBS and IBS are computed by the formulas in row 6 even if the results table is empty.
-2. In **B9**, use **Review → Explain & Review**. Follow the result through the effective rates, 60% rate reduction, base and parameterized SQL inputs. To try a one-invoice scenario, temporarily replace an input in row 6 with a numeric value and undo it afterward. This does not change SQLite. To change a persisted input inside Tayriva, edit an input in **Notas** and commit the staged edit. The single-invoice view recalculates from the database. The batch always uses the source table rather than the what-if preview values.
+2. In **B9**, use **Review → Explain & Review**. Follow the result through the effective rates, 60% rate reduction, base and parameterized SQL inputs. To try a one-invoice scenario, temporarily replace an input in row 6 with a numeric value and undo it afterward. This does not change SQLite. To change a persisted input inside Tayriva, edit an input in **Notas** and commit the staged edit. The single-invoice view recalculates from the database. The demo database rejects persisted changes that would take an invoice outside the fixed scenario. The batch always uses the source table rather than the what-if preview values.
 3. Choose **Data → Run formula batch**. Confirm that `bench_results` will be replaced. The app applies each formula independently and commits atomically; an error leaves the prior results intact. The status bar reports total, read, calculation and write/commit times. **Lote** shows the committed count and the selected invoice’s persisted amounts. There is no GPU and no memoization across invoices.
 
 To run the same Tayriva API action headlessly and print a machine-readable timing report:
