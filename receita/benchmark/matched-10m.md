@@ -22,4 +22,6 @@ Speedup is the ratio of measured elapsed times: **648.07×**. Phase timers do no
 
 This measured one matched pair using a Tayriva development build, source commit `3265cf18b128ddae5b3736bc5f34ee2fb17238b9`. It does not benchmark the current downloadable release. Tayriva evaluated the four defined scenarios through worksheet formulas; the official code also performs broader validation and generates observability data. The comparison is for the same batch outputs, not equivalent feature coverage or a claim to implement the full tax rulebook.
 
+To reproduce with a new build, follow the [four-case runner instructions](../mixed/README.md). A new run produces its own timing; it does not reproduce the archived measurement verbatim.
+
 The [downloadable NFS-e demo](../README.md) and [earlier single-scenario benchmark](README.md) are separate. Their instructions do not reproduce the four-case comparison.

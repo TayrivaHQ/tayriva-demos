@@ -6,6 +6,10 @@ Comece pela [planilha portátil `rtc-nfse.tay`](rtc-nfse.tay). Abra no Tayriva *
 
 **648× mais rápido que a calculadora de referência da própria Receita Federal.** Em um benchmark separado, a versão de desenvolvimento do Tayriva calculou e gravou 10 milhões de notas sintéticas em 34,30 segundos, contra 6 horas, 10 minutos e 28 segundos do motor oficial em Java. Todos os valores coincidiram, centavo a centavo, nos quatro cenários testados. [Veja o benchmark e a metodologia](benchmark/matched-10m.md).
 
+## Calcule no Tayriva
+
+O [benchmark com quatro tratamentos](mixed/README.md) aplica uma tabela de regras da planilha e compara os resultados linha a linha com o motor oficial. O [demo de cálculo nativo da planilha](native/README.md) usa as fórmulas do Tayriva para calcular cada nota e gravar o lote no SQLite. O cenário original descrito abaixo continua disponível como referência do motor oficial.
+
 ## O que realmente foi calculado
 
 Para medir cada nota separadamente, sem reutilizar resultados, use [o benchmark por nota](benchmark/README.md). O teste rápido descrito abaixo mede o fluxo que reaproveita perfis, não esse benchmark.

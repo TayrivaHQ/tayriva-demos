@@ -1,0 +1,8 @@
+{
+  "rows": 10000000,
+  "elapsed_seconds": 29.70439532,
+  "read_seconds": 4.420583427,
+  "calculate_seconds": 15.081677214,
+  "write_seconds": 9.628052858,
+  "click_to_visible_ms": 29995
+}
