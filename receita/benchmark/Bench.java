@@ -27,6 +27,9 @@ public class Bench {
         // The official model already rounds these monetary fields to cents.
         return value.movePointRight(2).longValueExact();
     }
+    private static String zeroPad(String s, int n) {
+        return s.length() >= n ? s : "0".repeat(n-s.length()) + s;
+    }
     static Tax calculate(Invoice i, BaseCalculoUnificadaNfseService base, ObservabilidadeService tax) {
         try {
             var event=OffsetDateTime.parse(i.event);
@@ -63,6 +66,7 @@ public class Bench {
         if (path==null || path.isEmpty()) throw new IllegalArgumentException("Set RTC_BENCH_DB");
         int workers=Integer.parseInt(System.getenv().getOrDefault("RTC_BENCH_WORKERS","4"));
         if (workers<1 || workers>16) throw new IllegalArgumentException("Use 1..16 workers");
+        boolean atomic="1".equals(System.getenv("RTC_BENCH_ATOMIC"));
         // The web context initializes exactly the same official beans as the reference REST API;
         // no invoice traverses HTTP in the timed pass.
         try (var ctx=SpringApplication.run(CalculadoraTributoApplication.class,args);
@@ -83,9 +87,16 @@ public class Bench {
                 total=r.getLong(1); committed=r.getLong(2);
             }
             var startRow=committed;
+            if (atomic && committed!=0) throw new IllegalStateException("Atomic mode requires a fresh benchmark copy");
             long readNs=0, calcNs=0, commitNs=0;
             long start=System.nanoTime();
             db.setAutoCommit(false);
+            if (atomic) try (var clear=db.createStatement()) {
+                var clock=System.nanoTime();
+                clear.executeUpdate("DELETE FROM bench_results");
+                commitNs+=System.nanoTime()-clock;
+            }
+            long nextProgress=10000;
             try (var select=db.prepareStatement("SELECT * FROM bench_invoices WHERE id>? ORDER BY id LIMIT ?");
                  var write=db.prepareStatement("INSERT INTO bench_results VALUES (?,?,?,?,?,?)");
                  var cp=db.prepareStatement("UPDATE bench_state SET committed=? WHERE id=1")) {
@@ -95,7 +106,7 @@ public class Bench {
                     select.setLong(1,committed); select.setInt(2,PAGE);
                     try (var r=select.executeQuery()) {
                         while (r.next()) data.add(new Invoice(r.getLong(1),r.getLong(2),r.getLong(3),r.getLong(4),
-                            r.getString(5),r.getLong(6),r.getString(7),r.getString(8),r.getString(9),r.getString(10),
+                            r.getString(5),r.getLong(6),r.getString(7),r.getString(8),zeroPad(r.getString(9),3),zeroPad(r.getString(10),6),
                             r.getInt(11),r.getInt(12),r.getInt(13)));
                     }
                     if (data.size()!=Math.min(PAGE,total-committed) || data.getFirst().id!=committed+1
@@ -119,16 +130,28 @@ public class Bench {
                     for (int n:write.executeBatch()) if (n!=1) throw new IllegalStateException("Unwritten tax row");
                     write.clearBatch();
                     committed+=results.length;
+                    if (!atomic) {
+                        cp.setLong(1,committed); cp.executeUpdate();
+                        db.commit();
+                    }
+                    commitNs+=System.nanoTime()-clock;
+                    if (committed>=nextProgress || committed==total) {
+                        System.out.printf(Locale.ROOT,"RTC_PROGRESS %d/%d %.3fs (%s)%n",committed,total,(System.nanoTime()-start)/1e9,
+                            atomic ? "calculated; pending atomic commit" : "committed");
+                        nextProgress=committed+(committed<100000 ? 10000 : 100000);
+                    }
+                }
+                if (atomic) {
+                    var clock=System.nanoTime();
                     cp.setLong(1,committed); cp.executeUpdate();
                     db.commit();
                     commitNs+=System.nanoTime()-clock;
-                    if (committed%(PAGE*122)==0) System.out.printf("RTC_PROGRESS %d/%d%n",committed,total);
                 }
             }
             long elapsed=System.nanoTime()-start;
             System.out.printf(Locale.ROOT,"RTC_BENCH {\"start_row\":%d,\"last_row\":%d,\"rows\":%d,\"errors\":0,"
-                +"\"workers\":%d,\"page\":%d,\"elapsed_s\":%.6f,\"read_s\":%.6f,\"calculate_s\":%.6f,\"write_commit_s\":%.6f}%n",
-                startRow,committed,committed-startRow,workers,PAGE,elapsed/1e9,readNs/1e9,calcNs/1e9,commitNs/1e9);
+                +"\"workers\":%d,\"atomic\":%b,\"page\":%d,\"elapsed_s\":%.6f,\"read_s\":%.6f,\"calculate_s\":%.6f,\"write_commit_s\":%.6f}%n",
+                startRow,committed,committed-startRow,workers,atomic,PAGE,elapsed/1e9,readNs/1e9,calcNs/1e9,commitNs/1e9);
         }
     }
 }

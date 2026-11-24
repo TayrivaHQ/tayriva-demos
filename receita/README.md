@@ -6,7 +6,7 @@ Comece pela [planilha portátil `rtc-nfse.tay`](rtc-nfse.tay). Abra no Tayriva *
 
 ## Calcule no Tayriva
 
-O [demo de cálculo nativo da planilha](native/README.md) usa as fórmulas do Tayriva para calcular cada nota e gravar o lote no SQLite. O cenário original descrito abaixo continua disponível como referência do motor oficial.
+O [benchmark com quatro tratamentos](mixed/README.md) aplica uma tabela de regras da planilha e compara os resultados linha a linha com o motor oficial. O [demo de cálculo nativo da planilha](native/README.md) usa as fórmulas do Tayriva para calcular cada nota e gravar o lote no SQLite. O cenário original descrito abaixo continua disponível como referência do motor oficial.
 
 ## O que realmente foi calculado
 

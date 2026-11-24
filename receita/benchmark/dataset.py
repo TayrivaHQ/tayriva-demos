@@ -88,7 +88,7 @@ def validate(path,n,api,*,worksheet=False):
                 vDescIncond=str(Decimal(discount)/100),vISSQN=str(Decimal(iss)/100)))),parse_float=Decimal)
             assert not base["erros"]
             payload=json.dumps(dict(id=f"rtc-bench-{i}",versao="1.0.0",dhFatoGerador=event,
-                municipio=city,uf=uf,itens=[dict(numero=1,nbs=nbs,cst=cst,cClassTrib=code,baseCalculo="@@BASE@@",
+                municipio=city,uf=uf,itens=[dict(numero=1,nbs=nbs,cst=f"{int(cst):03d}",cClassTrib=f"{int(code):06d}",baseCalculo="@@BASE@@",
                     aliquotasNominais=dict(cbs=a/100,ibsEstadual=b/100,ibsMunicipal=d/100))]))
             payload=payload.replace('"@@BASE@@"',format(Decimal(base["baseRG"]),"f"))
             obj=json.loads(source("observabilidade/regime-geral",payload))["objetos"][0]
