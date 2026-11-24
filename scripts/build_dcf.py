@@ -42,7 +42,7 @@ LAYOUT = {
 }
 
 @contextmanager
-def local_app(binary):
+def local_app(binary, *, timeout=15):
     with tempfile.TemporaryDirectory(prefix="tayriva-dcf-") as temp:
         folder=Path(temp)
         log=folder/"server.log"
@@ -61,12 +61,13 @@ def local_app(binary):
                 def post(endpoint, **data):
                     r=Request(base+"/api/"+endpoint, json.dumps(data).encode(), {"Content-Type":"application/json"})
                     try:
-                        with urlopen(r,timeout=15) as response:
+                        with urlopen(r,timeout=timeout) as response:
                             return json.load(response)
                     except Exception as error:
                         if hasattr(error,"read"):
                             raise RuntimeError(f"{endpoint}: {error.read().decode()}") from error
                         raise
+                post.base_url = base
                 yield post
             finally:
                 if proc.poll() is None:

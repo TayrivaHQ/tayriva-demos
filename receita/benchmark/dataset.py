@@ -44,13 +44,14 @@ def create(path, n):
         c.execute("INSERT INTO bench_state VALUES (1,?,0)", (n,))
     print(json.dumps(dict(generated=n,generation_s=time.perf_counter()-start,db_bytes=path.stat().st_size)))
 
-def validate(path,n,api):
+def validate(path,n,api,*,worksheet=False):
     source=client(api)
     version=json.loads(source("dados-abertos/versao"))
     assert (version["versaoApp"],version["versaoDb"],version["ambiente"])==("1.7.2","V0073","offline"),version
     start=time.perf_counter()
     with closing(sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro",uri=True)) as c:
-        assert c.execute("SELECT total,committed FROM bench_state WHERE id=1").fetchone()==(n,n)
+        if not worksheet:
+            assert c.execute("SELECT total,committed FROM bench_state WHERE id=1").fetchone()==(n,n)
         assert c.execute("SELECT count(*),min(id),max(id) FROM bench_invoices").fetchone()==(n,1,n)
         stats=c.execute("SELECT count(*),min(id),max(id),sum(base),sum(cbs),sum(state),sum(city),sum(ibs) FROM bench_results").fetchone()
         assert stats[:3]==(n,1,n),stats
@@ -86,7 +87,8 @@ if __name__=="__main__":
     p.add_argument("db",type=Path)
     p.add_argument("--rows",type=int,default=10_000_000)
     p.add_argument("--api",default="http://127.0.0.1:18927")
+    p.add_argument("--worksheet",action="store_true",help="Check worksheet results without the Java runner checkpoint")
     a=p.parse_args()
     if not 1<=a.rows<=10_000_000:p.error("rows must be 1..10000000")
     if a.mode=="prepare": create(a.db,a.rows)
-    else: validate(a.db,a.rows,a.api)
+    else: validate(a.db,a.rows,a.api,worksheet=a.worksheet)

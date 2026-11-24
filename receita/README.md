@@ -4,6 +4,10 @@
 
 Comece pela [planilha portátil `rtc-nfse.tay`](rtc-nfse.tay). Abra no Tayriva **v0.14.0** ou posterior, selecione **Consulta!B11** e use **Review → Explain & Review**. Esse snapshot de uma nota é fixo e funciona sem Java, SQLite externo ou internet. Veja também o [PDF demonstrativo](danfse-demonstrativo.pdf) e a [memória oficial da nota 10.000.000](nota-10000000.json), com os corpos de entrada e saída das duas chamadas.
 
+## Calcule no Tayriva
+
+O [demo de cálculo nativo da planilha](native/README.md) usa as fórmulas do Tayriva para calcular cada nota e gravar o lote no SQLite. O cenário original descrito abaixo continua disponível como referência do motor oficial.
+
 ## O que realmente foi calculado
 
 Para medir cada nota separadamente, sem reutilizar resultados, use [o benchmark por nota](benchmark/README.md). O teste rápido descrito abaixo mede o fluxo que reaproveita perfis, não esse benchmark.
