@@ -4,6 +4,8 @@
 
 Open a real workbook, pick a result, and follow the inputs that produced it. The valuation and Treasury labs use cited public data; the OIS and reconciliation fixtures use synthetic inputs. None of these files is investment advice or audit assurance.
 
+**648× faster than Receita Federal’s reference calculator.** Tayriva’s development build calculated and saved 10 million synthetic invoices in 34.30 seconds, versus 6 hours, 10 minutes, 28 seconds for the official Java engine. All amounts matched across four tax scenarios. [See the benchmark and method](receita/benchmark/matched-10m.md).
+
 ## Open a demo
 
 1. [Download Tayriva](https://github.com/TayrivaHQ/tayriva/releases/tag/v0.14.0) for Windows x64 or Linux x64. Use **Tayriva 0.14.0 or later** for these native `.tay` workbooks.

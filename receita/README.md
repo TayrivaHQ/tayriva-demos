@@ -4,6 +4,8 @@
 
 Comece pela [planilha portátil `rtc-nfse.tay`](rtc-nfse.tay). Abra no Tayriva **v0.14.0** ou posterior, selecione **Consulta!B11** e use **Review → Explain & Review**. Esse snapshot de uma nota é fixo e funciona sem Java, SQLite externo ou internet. Veja também o [PDF demonstrativo](danfse-demonstrativo.pdf) e a [memória oficial da nota 10.000.000](nota-10000000.json), com os corpos de entrada e saída das duas chamadas.
 
+**648× mais rápido que a calculadora de referência da própria Receita Federal.** Em um benchmark separado, a versão de desenvolvimento do Tayriva calculou e gravou 10 milhões de notas sintéticas em 34,30 segundos, contra 6 horas, 10 minutos e 28 segundos do motor oficial em Java. Todos os valores coincidiram, centavo a centavo, nos quatro cenários testados. [Veja o benchmark e a metodologia](benchmark/matched-10m.md).
+
 ## O que realmente foi calculado
 
 Para medir cada nota separadamente, sem reutilizar resultados, use [o benchmark por nota](benchmark/README.md). O teste rápido descrito abaixo mede o fluxo que reaproveita perfis, não esse benchmark.
