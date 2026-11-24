@@ -13,7 +13,7 @@ The cases model qualifying operations with illustrative nominal rates, not a leg
 
 ## Reproduce the matched comparison
 
-Requirements: [Tayriva 0.15.0 or later](https://github.com/TayrivaHQ/tayriva/releases), with batch lookup and IF support, Python 3, JDK 25, pinned [Receita RTC checkout](https://github.com/ReceitaFederal/calculadora-rtc-regime-regular/tree/f1eebd7ce3157423b1a6aaca7dc1d6c3395452c4) at commit `f1eebd7ce3157423b1a6aaca7dc1d6c3395452c4` with Maven dependencies cached and the [offline database migrated to V0073](../benchmark/README.md), Linux `taskset`, and about 4 GB free disk space. Pick an available logical CPU. Use a new directory for every measured pair.
+Requirements: [Tayriva 0.15.0 or later](https://github.com/TayrivaHQ/tayriva/releases), with batch lookup and IF support, Python 3, JDK 25, pinned [Receita RTC checkout](https://github.com/ReceitaFederal/calculadora-rtc-regime-regular/tree/f1eebd7ce3157423b1a6aaca7dc1d6c3395452c4) at commit `f1eebd7ce3157423b1a6aaca7dc1d6c3395452c4` with Maven dependencies cached and the [offline database migrated to V0073](../benchmark/README.md), Linux `taskset`, and about 4 GB free disk space on the filesystem holding the results and temporary files. Pick an available logical CPU. Use a new directory for every measured pair.
 
 ```sh
 export RTC_RESULTS="$PWD/matched-10m"
@@ -21,7 +21,8 @@ export RTC_TAYRIVA_SERVER=/absolute/path/to/tayriva
 export RTC_OFFICIAL_CHECKOUT=/absolute/path/to/receita
 export RTC_CPU=2
 export JAVA_HOME=/absolute/path/to/jdk-25
-mkdir -p "$RTC_RESULTS"
+mkdir -p "$RTC_RESULTS/tmp"
+export TMPDIR="$RTC_RESULTS/tmp" SQLITE_TMPDIR="$RTC_RESULTS/tmp"
 python3 receita/mixed/dataset.py prepare "$RTC_RESULTS/mixed-native-10m.sqlite"
 cp --reflink=auto "$RTC_RESULTS/mixed-native-10m.sqlite" "$RTC_RESULTS/mixed-official-10m.sqlite"
 bash receita/mixed/run-pair.sh
